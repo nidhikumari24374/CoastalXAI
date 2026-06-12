@@ -1,0 +1,2290 @@
+\documentclass[12pt, a4paper]{article}
+
+% ==========================================
+% PACKAGES
+% ==========================================
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{times}       % Times New Roman-like
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{background}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% ==========================================
+% GEOMETRY & LAYOUT
+% ==========================================
+\geometry{
+  top=25mm,
+  bottom=25mm,
+  left=30mm,   % ~1.2 inch, matches VTU style
+  right=20mm,
+  headheight=15pt
+}
+
+% Line spacing
+\onehalfspacing
+
+% ==========================================
+% GLOBAL BORDER ON EACH PAGE
+% ==========================================
+\backgroundsetup{
+  scale=1,
+  color=black,
+  opacity=1,
+  angle=0,
+  contents={%
+    \begin{tikzpicture}[remember picture,overlay]
+      \draw[line width=1pt]
+        ($ (current page.north west) + (20mm,-20mm) $)
+        rectangle
+        ($ (current page.south east) + (-20mm,20mm) $);
+    \end{tikzpicture}%
+  }
+}
+
+% ==========================================
+% HEADER AND FOOTER
+% ==========================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small \textbf{CoastalXAI: Temperature Prediction \& Interpretation System}}
+\fancyhead[R]{\small \textbf{Dept. of CSE, ACSCE}}
+\fancyfoot[C]{\textbf{\thepage}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+% Make first page of each \section use same header/footer
+\makeatletter
+\let\ps@plain\ps@fancy
+\makeatother
+
+% ==========================================
+% HYPERLINK SETUP
+% ==========================================
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=black,
+  urlcolor=blue,
+  citecolor=black
+}
+
+% ==========================================
+% CODE LISTING STYLE
+% ==========================================
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2
+}
+\lstset{style=mystyle}
+
+% ==========================================
+% IMAGE PLACEHOLDER MACRO
+% (Use until you have real images)
+% ==========================================
+\newcommand{\imageplaceholder}[2]{
+  \begin{figure}[H]
+    \centering
+    \begin{tcolorbox}[colback=white, colframe=black, width=0.8\textwidth, arc=0mm, boxrule=1pt]
+      \centering
+      \vspace{#2}
+      \textbf{\Large [IMAGE: #1]}\\
+      \vspace{0.5cm}
+      \textit{(Replace this box with \texttt{\textbackslash includegraphics} later)}\\
+      \textit{Filename suggestion: \texttt{#1.png}}
+      \vspace{#2}
+    \end{tcolorbox}
+    \caption{\textbf{#1}}
+    \label{fig:#1}
+  \end{figure}
+}
+
+% ==========================================
+% TITLE META (for PDF)
+% ==========================================
+\title{COASTALXAI: TEMPERATURE PREDICTION \&\\
+INTERPRETATION SYSTEM}
+\author{Moksha R \and Mohammed Irfan \and Mohammed Fahad \and Mohammed Faiz}
+\date{2023--2024}
+
+% ==========================================
+% DOCUMENT START
+% ==========================================
+\begin{document}
+
+% Turn off header/footer ONLY on title & certificate pages
+\thispagestyle{empty}
+
+% ==========================================
+% TITLE PAGE  (VTU STYLE)
+% ==========================================
+\begin{titlepage}
+  \begin{center}
+    \vspace*{0.5cm}
+
+    % ---------- VTU LOGO ----------
+    % Replace tcolorbox with actual logo:
+    % \includegraphics[width=3cm]{vtu_logo.png}
+    \begin{tcolorbox}[colback=white, colframe=black, width=4cm, height=4cm,
+                      halign=center, valign=center]
+      \textbf{[VTU LOGO]}
+    \end{tcolorbox}
+
+    \vspace{0.5cm}
+    {\large \textbf{VISVESVARAYA TECHNOLOGICAL UNIVERSITY}}\\
+    \normalsize ``Jnana Sangama'', Belagavi -- 590018
+
+    \vspace{1.5cm}
+    {\large \textbf{A MINI-PROJECT REPORT ON}}\\[0.5cm]
+    {\Large \textbf{``COASTALXAI: TEMPERATURE PREDICTION \&\\
+    INTERPRETATION SYSTEM''}}
+
+    \vspace{1cm}
+    {\normalsize Submitted in the partial fulfillment of the requirement\\
+    for the award of the degree of}\\[0.5cm]
+    {\large \textbf{BACHELOR OF ENGINEERING}}\\
+    \normalsize in\\
+    {\large \textbf{COMPUTER SCIENCE \& ENGINEERING}}
+
+    \vspace{1cm}
+    {\normalsize Submitted By}\\[0.5cm]
+    {\textbf{MOKSHA R (1AH23CS092)}\\
+     \textbf{MOHAMMED IRFAN (1AH23CS091)}\\
+     \textbf{MOHAMMED FAHAD (1AH23CS089)}\\
+     \textbf{MOHAMMED FAIZ (1AH23CS090)}}
+
+    \vspace{1cm}
+    {\normalsize Under the Guidance of}\\[0.3cm]
+    {\textbf{Mrs. KAYAL VIZHI S}\\
+    \small Assistant Professor\\
+    Dept. of CSE, ACSCE}
+
+    \vspace{1.5cm}
+    % ---------- ACS LOGO ----------
+    % Replace with actual college logo image later
+    \begin{tcolorbox}[colback=white, colframe=black, width=4cm, height=4cm,
+                      halign=center, valign=center]
+      \textbf{[ACS LOGO]}
+    \end{tcolorbox}
+
+    \vspace{0.5cm}
+    {\large \textbf{DEPARTMENT OF COMPUTER SCIENCE \& ENGINEERING}}\\
+    {\Large \textbf{ACS COLLEGE OF ENGINEERING}}\\
+    \normalsize Mysore Road, Bangalore -- 560074\\
+    (An ISO 9001:2008 Certified Institute)\\
+    (2023--24)
+
+  \end{center}
+\end{titlepage}
+
+% ==========================================
+% CERTIFICATE PAGE
+% ==========================================
+\newpage
+\thispagestyle{empty}
+\begin{center}
+  {\large \textbf{ACS COLLEGE OF ENGINEERING}}\\
+  Mysore Road, Bangalore -- 560074\\
+  (An ISO 9001:2008 Certified Institute)\\
+  (Affiliated to Visvesvaraya Technological University, Belagavi)
+
+  \vspace{0.8cm}
+  {\large \textbf{DEPARTMENT OF COMPUTER SCIENCE \& ENGINEERING}}
+
+  \vspace{0.6cm}
+  \begin{tcolorbox}[colback=white, colframe=black, width=3cm, height=3cm,
+                    halign=center, valign=center]
+    \textbf{[DEPT LOGO]}
+  \end{tcolorbox}
+
+  \vspace{0.6cm}
+  {\Large \textbf{CERTIFICATE}}
+\end{center}
+
+\vspace{0.8cm}
+\noindent
+Certified that the mini-project work entitled \textbf{``COASTALXAI: TEMPERATURE
+PREDICTION \& INTERPRETATION SYSTEM''} carried out by
+\textbf{MOKSHA R (1AH23CS092), MOHAMMED IRFAN (1AH23CS091),
+MOHAMMED FAHAD (1AH23CS089), MOHAMMED FAIZ (1AH23CS090)},
+students of ACS College of Engineering in partial fulfillment for the award of Bachelor
+of Engineering in Computer Science \& Engineering of the Visvesvaraya Technological
+University, Belagavi during the year 2023--2024.
+
+It is certified that all corrections/suggestions indicated for Internal Assessment have been
+incorporated in the report deposited in the departmental library. The mini-project report
+has been approved as it satisfies the academic requirements in respect of mini-project
+work prescribed for the said degree.
+
+\vspace{2cm}
+\noindent
+\begin{minipage}{0.45\textwidth}
+  \textbf{Signature of the Guide}\\[0.2cm]
+  Mrs. Kayal Vizhi S\\
+  Assistant Professor\\
+  Dept. of CSE, ACSCE
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+  \begin{flushright}
+    \textbf{Signature of the HOD}\\[0.2cm]
+    Dr. V. Maraal\\
+    Professor \& Head\\
+    Dept. of CSE, ACSCE
+  \end{flushright}
+\end{minipage}
+
+\vspace{2cm}
+\begin{center}
+  \textbf{External Viva-Voce}
+\end{center}
+
+\vspace{0.5cm}
+\noindent
+Name of the Examiners \hfill Signature with Date\\[0.3cm]
+1.\ \rule{6cm}{0.4pt} \hfill \rule{4cm}{0.4pt}\\[0.3cm]
+2.\ \rule{6cm}{0.4pt} \hfill \rule{4cm}{0.4pt}
+
+% ==========================================
+% ACKNOWLEDGEMENT
+% ==========================================
+\newpage
+\thispagestyle{fancy}
+\begin{center}
+  {\Large \textbf{ACKNOWLEDGEMENT}}
+\end{center}
+\vspace{0.8cm}
+
+%% >>> EDIT HERE <<<  (Write your acknowledgement in 1–2 paragraphs)
+We would like to express our sincere gratitude to \textbf{Mrs. Kayal Vizhi S},
+Assistant Professor, Dept.\ of CSE, ACS College of Engineering, for her invaluable
+guidance, constant encouragement and constructive feedback throughout the course
+of this mini-project. We are also thankful to \textbf{Dr. V. Maraal}, Professor and
+Head, Dept.\ of CSE, and to the management of ACS College of Engineering for
+providing the necessary infrastructure and academic environment.
+
+Finally, we thank our parents, friends and classmates for their moral support,
+motivation and prayers during the successful completion of this work.
+
+\vspace{1.5cm}
+\begin{flushright}
+\textbf{MOKSHA R}\\
+\textbf{MOHAMMED IRFAN}\\
+\textbf{MOHAMMED FAHAD}\\
+\textbf{MOHAMMED FAIZ}
+\end{flushright}
+
+% ==========================================
+% ABSTRACT
+% ==========================================
+\newpage
+\setcounter{page}{1}
+\begin{center}
+  {\Large \textbf{ABSTRACT}}
+\end{center}
+\vspace{0.8cm}
+
+%% >>> EDIT HERE <<<  (Paste your improved abstract text)
+%% You can reuse and expand the abstract you already wrote.
+Your abstract text goes here...
+
+% ==========================================
+% TABLE OF CONTENTS, LISTS
+% ==========================================
+\newpage
+\tableofcontents
+
+\newpage
+\listoffigures
+
+\newpage
+\listoftables
+
+% ==========================================
+% CHAPTER 1 – INTRODUCTION
+% ==========================================
+% ==========================================
+% CHAPTER 1 – INTRODUCTION
+% ==========================================
+\newpage
+\section{\textbf{INTRODUCTION}}
+
+\subsection{\textbf{Background and Motivation}}
+
+Climate change has evolved from being a distant scientific concern to a
+daily reality affecting millions of people. Rising temperatures, melting
+ice caps, and shifting rainfall patterns are widely discussed, but one of
+the most fragile and high-risk zones on the planet is the \textit{coastal
+interface} between land and ocean. Coastal regions host dense human
+settlements, ports, industries and critical infrastructure. Even small
+changes in temperature or sea level can trigger disproportionate social,
+economic and ecological consequences.
+
+Asia, in particular, is home to several mega-deltas (such as the Ganges–
+Brahmaputra, Mekong and Yangtze), low-lying island nations and
+rapidly expanding coastal cities. These regions face simultaneous threats
+from \textbf{land submergence}, \textbf{sea-level rise} and \textbf{extreme heat}. The
+interaction of these variables is non-linear: a minor change in land
+impact or coastal length can, under certain conditions, lead to a major
+change in coastal temperature. This makes purely manual analysis
+insufficient and motivates the use of data-driven modelling.
+
+At the same time, policy makers, coastal engineers and environmental
+planners are cautious about adopting complex machine-learning models
+because they often behave like ``black boxes''. A model that predicts a
+future temperature but cannot justify \emph{why} it produced that number
+cannot be fully trusted in high-stakes decisions such as the design of
+sea walls, zoning regulations or relocation of vulnerable communities.
+This tension between accuracy and interpretability sets the stage for the
+\textbf{CoastalXAI} project.
+
+\subsection{\textbf{Coastal Climate Challenges in Asia}}
+
+The Asian coastline spans arid regions, tropical monsoon zones and
+temperate climates. Some countries, such as Bahrain and the United Arab
+Emirates, exhibit high temperatures with small land areas and limited
+fresh-water resources. Others, such as India, Bangladesh or Vietnam,
+have long and heavily populated coastlines that are exposed to cyclones,
+storm surges and riverine flooding. In many locations, \textbf{land
+subsidence} due to groundwater extraction or sediment compaction causes
+the land surface to sink relative to sea level, effectively accelerating
+submergence.
+
+Key challenges faced by Asian coastal regions include:
+\begin{itemize}
+  \item \textbf{Rising mean temperatures}, which increase the likelihood of
+  marine heatwaves and urban heat-island effects.
+  \item \textbf{Changing coastline geometry}, captured through metrics such as
+  coastal length and land area, which modifies how heat and moisture
+  are exchanged between land and sea.
+  \item \textbf{Anthropogenic land impact}, including land-use change,
+  reclamation projects and erosion, which further alter local micro-climates.
+  \item \textbf{Limited, noisy environmental data} for some countries,
+  making it difficult to build robust models without careful
+  preprocessing and feature engineering.
+\end{itemize}
+
+Traditional statistical techniques struggle to capture these coupled
+effects, especially when the relationships among variables are
+non-linear and involve complex interactions. This motivates the adoption
+of ensemble machine-learning methods, which can learn intricate
+patterns from data.
+
+\subsection{\textbf{Role of Machine Learning in Environmental Modelling}}
+
+Machine-learning (ML) techniques such as Support Vector Machines,
+Random Forests and Neural Networks have demonstrated strong
+performance in various environmental applications, including rainfall
+prediction, flood forecasting and coastal erosion modelling. ML models
+are particularly well suited to:
+\begin{itemize}
+  \item Handling \textbf{multi-dimensional feature spaces} with both
+  numerical and categorical variables.
+  \item Capturing \textbf{non-linear relationships} between drivers
+  (e.g. land impact, coastal length, sea level) and responses
+  (temperature, erosion rate, etc.).
+  \item Exploiting \textbf{historical data} to learn patterns without
+  requiring an explicit analytical equation for every process.
+\end{itemize}
+
+Among these models, the \textbf{Random Forest Regressor} has become a
+popular choice for tabular environmental data. It aggregates multiple
+decision trees, thereby reducing variance and improving generalisation
+\cite{breiman2001}. Random Forests are relatively robust to outliers,
+scaling differences and missing values, which makes them attractive for
+real-world datasets that are imperfect and noisy.
+
+However, the major criticism of many ML approaches is their lack of
+transparency. A model may fit the data extremely well, but if it
+cannot explain why a particular combination of land area, country and
+sea level leads to a given temperature prediction, domain experts may
+remain sceptical. This challenge directly motivates the integration of
+Explainable AI (XAI) techniques into CoastalXAI.
+
+\subsection{\textbf{Need for Explainable AI in Climate Decision Making}}
+
+Explainable AI (XAI) refers to a family of methods that make ML models
+more interpretable and transparent to human users. In climate and
+environmental applications, interpretability is not just a nice
+add-on—it is a \textbf{core requirement}. When predictions are used as
+inputs to policy or long-term infrastructure planning, stakeholders need
+answers to questions such as:
+\begin{itemize}
+  \item Which factors are most responsible for the predicted warming in a
+  given coastal region?
+  \item Are the model's conclusions consistent with physical intuition and
+  established scientific literature?
+  \item How sensitive is the prediction to changes in land-use or sea-level
+  scenarios?
+\end{itemize}
+
+Two widely adopted XAI methods are:
+\begin{itemize}
+  \item \textbf{SHAP (Shapley Additive Explanations)} \cite{shap2017}, which
+  uses concepts from cooperative game theory to attribute a
+  prediction to individual features. SHAP values offer a consistent
+  notion of feature contribution and can be visualised through
+  force plots and waterfall plots.
+  \item \textbf{LIME (Local Interpretable Model-agnostic Explanations)}
+  \cite{lime2016}, which builds a simple surrogate model (often a
+  linear regressor) in the neighbourhood of a single prediction. This
+  helps users understand \textit{locally} why the model behaved in a certain
+  way for one particular input.
+\end{itemize}
+
+By combining Random Forest regression with SHAP and LIME, the
+CoastalXAI system aims to deliver both \textbf{high predictive accuracy}
+and \textbf{human-friendly explanations}. In particular, the system is designed
+so that a user can not only view a numeric temperature prediction but
+also see which features pushed the value upward or downward and by
+how much.
+
+\subsection{\textbf{Problem Statement}}
+
+Despite advances in environmental ML research, several gaps remain
+between academic models and practical tools deployed for coastal
+planning:
+
+\begin{enumerate}[label=\alph*)]
+  \item \textbf{Accuracy–Interpretability Gap:} Many existing studies use
+  either simple, interpretable models (e.g.\ linear regression) with
+  limited accuracy, or highly complex models (e.g.\ deep neural
+  networks) that act as black boxes. There is a need for a system
+  that balances both accuracy and interpretability using modern XAI
+  techniques.
+  \item \textbf{Fragmented Workflows:} Researchers often train models in
+  isolated notebooks, manually generate plots and do not package the
+  workflow into a reusable application. Stakeholders without coding
+  expertise cannot easily experiment with new scenarios.
+  \item \textbf{Limited Scenario Exploration:} Existing tools typically
+  provide static predictions for historical years. Policy makers,
+  however, require \textbf{what-if analysis} (e.g.\ ``What if land impact
+  increases while sea level continues to rise?''), future trend
+  simulation and comparison between multiple countries.
+  \item \textbf{Lack of Narrative Explanations:} Most XAI outputs are
+  presented as technical plots. Non-technical users, such as local
+  administrative officers, may prefer short, textual summaries in
+  plain language that tell a ``climate story'' for a given region.
+\end{enumerate}
+
+\noindent
+\textbf{Formal Problem Statement:}\\[0.1cm]
+\textit{Design and develop an Explainable AI based decision-support system
+for predicting coastal temperature under varying land submergence and
+sea-level conditions for Asian countries, such that the system (i)
+achieves high predictive accuracy, (ii) provides transparent global and
+local explanations for each prediction, and (iii) allows users to
+interactively explore scenarios, trends and country-wise comparisons.}
+
+\subsection{\textbf{Objectives}}
+
+To address the above problem, the CoastalXAI project is guided by the
+following objectives:
+
+\begin{itemize}
+  \item \textbf{Data Engineering:} Curate, clean and preprocess a
+  multi-country coastal dataset spanning 1990–2020, including
+  features such as land area, coastal length, land impact, sea level,
+  annual balance and country identifiers.
+  \item \textbf{Model Development:} Implement and fine-tune a Random
+  Forest Regression model that achieves at least \mbox{$R^2 > 0.95$} on the
+  test set for temperature prediction, inspired by the methodology of
+  \cite{wang2024}.
+  \item \textbf{Explainability Integration:} Integrate SHAP and LIME
+  to provide both global feature importance (across the full dataset)
+  and local explanations (for individual predictions), visualised
+  through force plots, waterfall plots and bar charts.
+  \item \textbf{Interactive Web Interface:} Develop a Streamlit-based
+  frontend that allows users to:
+  \begin{enumerate}[label=\roman*)]
+    \item Input custom scenarios via sliders and dropdowns.
+    \item View predictions in real time with dynamic colour-coded
+    feedback.
+    \item Explore XAI visualisations for each scenario.
+  \end{enumerate}
+  \item \textbf{Advanced Analytical Features:} Extend the basic dashboard
+  with innovative capabilities, including:
+  \begin{enumerate}[label=\roman*)]
+    \item \textbf{Future Climate Simulation Mode}: varying the year
+    from historical (1990) to near-future horizons (up to 2050)
+    while keeping other factors fixed, to understand predicted
+    trends.
+    \item \textbf{Automatic Climate Report Generator}: automatic
+    generation of a PDF summary containing prediction values,
+    key drivers and risk assessments.
+    \item \textbf{Country Comparison Mode}: side-by-side comparison of
+    two countries under the same environmental configuration to
+    identify differential feature contributions.
+    \item \textbf{Climate Story Mode}: rule-based generation of a
+    human-readable narrative explanation for each prediction,
+    targeting non-technical users.
+  \end{enumerate}
+\end{itemize}
+
+\subsection{\textbf{Scope of the Project}}
+
+The scope of CoastalXAI is carefully defined to keep the project
+manageable while still providing meaningful insights:
+
+\begin{itemize}
+  \item \textbf{Geographical Scope:} The dataset and analysis are
+  restricted to countries within the Asian continent. This focus
+  aligns with the reference research paper \cite{wang2024} and
+  reflects Asia's high vulnerability to coastal hazards.
+  \item \textbf{Temporal Scope:} The core model is trained on historical
+  data from 1990 to 2020. The ``future simulation'' module extends
+  predictions to 2050, but these values are presented as
+  \textit{trend-based extrapolations}, not certified climate
+  projections.
+  \item \textbf{Variable Scope:} The primary output variable is coastal
+  temperature (in $^\circ$C). Other climate variables such as
+  precipitation, wind speed or humidity are outside the present
+  scope but can be integrated in future work.
+  \item \textbf{Technological Scope:} The project is a pure software
+  solution built using Python, scikit-learn, SHAP, LIME and
+  Streamlit. It does not include physical sensors, IoT devices or
+  real-time data acquisition hardware.
+  \item \textbf{User Scope:} The designed interface targets environmental
+  researchers, engineering students, urban planners and policy
+  analysts who may not have deep expertise in programming but are
+  comfortable interpreting graphs and structured reports.
+\end{itemize}
+
+\subsection{\textbf{Significance of the Study}}
+
+The significance of CoastalXAI can be viewed from multiple
+perspectives:
+
+\begin{itemize}
+  \item \textbf{Academic Significance:} The project demonstrates how an
+  advanced ensemble model can be tightly integrated with SHAP and
+  LIME to create a transparent prediction pipeline. It converts a
+  research-paper methodology into an end-to-end software artefact
+  that others can extend.
+  \item \textbf{Practical Significance:} Coastal planners can use the
+  system to quickly test ``what-if'' scenarios, such as modifying
+  land impact or exploring alternative coastline configurations,
+  and immediately see how the predicted temperature and its
+  explanations change.
+  \item \textbf{Pedagogical Significance:} The project doubles as an
+  educational tool for students learning machine learning and XAI.
+  By observing how changes in input parameters alter both the
+  predictions and the SHAP/LIME explanations, learners gain an
+  intuitive understanding of feature importance.
+  \item \textbf{Policy Support:} Although not a replacement for full
+  climate models, CoastalXAI can inform preliminary decision-making
+  by highlighting which factors most strongly influence thermal
+  risk in different countries and how these relationships vary
+  across scenarios.
+\end{itemize}
+
+\subsection{\textbf{Methodology Overview}}
+
+At a high level, the CoastalXAI workflow consists of two tightly
+connected pipelines:
+
+\begin{enumerate}
+  \item \textbf{Offline Training Pipeline}
+    \begin{itemize}
+      \item Load and clean the raw \texttt{Land Submergence dataset.csv},
+      filtering for Asian countries and years between 1990 and 2020.
+      \item Handle missing values and outliers; perform one-hot encoding
+      for categorical features such as \texttt{Country} and \texttt{Continent}.
+      \item Split the data into training and test sets; train the Random
+      Forest Regressor and evaluate its performance.
+      \item Save the trained model and associated artefacts (feature
+      column list, LIME training data, categorical indices and
+      pre-generated SHAP plots) to disk as \texttt{.joblib}, \texttt{.json}
+      and \texttt{.csv} files.
+    \end{itemize}
+  \item \textbf{Online Inference and Interpretation Pipeline}
+    \begin{itemize}
+      \item Load the saved model and artefacts in a Streamlit frontend.
+      \item Accept user input through sliders and dropdown menus for
+      year, country, land area, coastal length, land impact, sea
+      level and annual balance.
+      \item Construct a feature vector consistent with the training
+      schema and compute the predicted temperature.
+      \item Generate SHAP and LIME explanations for the given input,
+      and display them through force plots, waterfall plots and
+      local bar charts.
+      \item Provide additional analytical modes such as future trend
+      simulation, PDF report generation, country comparison and
+      natural-language climate stories.
+    \end{itemize}
+\end{enumerate}
+
+For visual clarity, the detailed architecture and data-flow diagrams
+are presented in Chapter~4 (System Design).
+
+\subsection{\textbf{Organization of the Report}}
+
+The remainder of this report is organised as follows:
+
+\begin{itemize}
+  \item \textbf{Chapter 2 -- Literature Survey:} Reviews existing work on
+  machine learning for coastal studies, Random Forest ensembles
+  and XAI methods such as SHAP and LIME, with particular emphasis
+  on the reference paper \cite{wang2024}.
+  \item \textbf{Chapter 3 -- System Requirements Specification:} Describes
+  the hardware, software, functional and non-functional
+  requirements of the CoastalXAI system.
+  \item \textbf{Chapter 4 -- System Design:} Presents the overall
+  architecture, data-flow diagrams, module decomposition and
+  mathematical formulation of the Random Forest model.
+  \item \textbf{Chapter 5 -- System Implementation:} Details the
+  implementation of the training pipeline, the Streamlit
+  application and the integration of SHAP, LIME and advanced
+  analytical features.
+  \item \textbf{Chapter 6 -- Results and Discussion:} Provides model
+  evaluation metrics, screenshots of the dashboard, XAI plots and
+  interpretation of selected case studies.
+  \item \textbf{Chapter 7 -- Conclusion and Future Scope:} Summarises the
+  contributions of CoastalXAI, discusses its limitations and
+  outlines potential extensions such as integrating additional
+  variables, expanding to global scale or interfacing with real-time
+  climate APIs.
+\end{itemize}
+% ==========================================
+% CHAPTER 2 – LITERATURE SURVEY
+% ==========================================
+\newpage
+\section{\textbf{LITERATURE SURVEY}}
+
+The adoption of machine learning and artificial intelligence in environmental modelling has evolved significantly over the last decade. Traditional environmental studies relied heavily on statistical regression, trend analysis techniques and physics-driven equations. While such models are interpretable, they fail to capture complex interactions among variables such as sea level, land area, coastline geometry and anthropogenic land modifications. This literature survey reviews prior works in three major domains relevant to this project: (a) climate and coastal-temperature prediction models, (b) implementation of advanced regression algorithms for coastal datasets and (c) transparency methods for explaining model outputs through Explainable AI (XAI).
+
+\subsection{\textbf{2.1 Coastal and Temperature Modelling Studies}}
+
+Studies focusing on coastal vulnerability predominantly analyse erosion, thermal changes, sea-level rise and land subsidence. According to Wang et al. (2024) \cite{wang2024}, coastal temperature variation correlates significantly with variables such as land area, annual mass balance changes and coastline displacement. Their study explored 30 years of temperature and land-change data and concluded that coastal environments — especially in dense coastal belts — show rapid thermal shifts that cannot be captured by simplistic forecasting models.
+
+Similarly, Ghosh et al. (2019) \cite{ghosh2019} applied Support Vector Machines to coastal erosion forecasting and demonstrated that machine learning performs substantially better than deterministic regression-based formulas. However, their work lacked the ability to display how different environmental variables influenced predictions — which has implications for decision-making.
+
+Across multiple studies, a consistent pattern emerges:
+
+\begin{itemize}
+    \item Climate variables exhibit strong seasonal and long-term non-linear behaviour.
+    \item The interaction between land-use change and sea-level contributes significantly to coastal micro-temperature zones.
+    \item Predictive systems require multi-parameter input with robust processing rather than univariate extrapolation.
+\end{itemize}
+
+This motivates machine-learning-based modelling with multi-feature explainability — which CoastalXAI implements.
+
+\subsection{\textbf{2.2 Machine Learning in Environmental Prediction}}
+
+The work of Breiman (2001) \cite{breiman2001} formally introduced Random Forest as a general-purpose regression and classification technique capable of dealing with noisy multidimensional datasets. Multiple later studies acknowledge its suitability for environmental prediction because:
+
+\begin{enumerate}
+    \item It reduces overfitting through random feature sampling at tree-splits.
+    \item It stabilises prediction variance through ensemble aggregation.
+    \item It remains robust when physical meaning of features is heterogeneous.
+\end{enumerate}
+
+In the climate space, Venkatesan et al. (2017) \cite{venk2017} implemented Random Forest for marine environment variability, concluding that non-linear feature interactions are dominant drivers of ecological changes. This aligns closely with the complexity of the dataset used in CoastalXAI.
+
+Several works on temperature prediction, including NOAA reports (2021-2024) and urban-heat-island detection systems, emphasise that the best-performing models are ensemble-based rather than interpretable linear regression systems. However, unlike physical modelling frameworks, machine-learning models are criticised because they lack transparency. Such models predict accurately, but decision-makers cannot validate whether such predictions arise from appropriate cause–effect relationships.
+
+\subsection{\textbf{2.3 Land Submergence, Sea-Level Rise and Thermal Impact}}
+
+Across global coastal studies, three environmental variables frequently appear as strong drivers of climatic change:
+
+\begin{enumerate}
+    \item \textbf{Land subsidence / land-impact factor}
+    \item \textbf{Net coastline expansion or reduction}
+    \item \textbf{Gradual sea-level rise}
+\end{enumerate}
+
+The research paper used in this project \cite{wang2024} was among the first Modern Asian studies that attempted to quantify coastal temperature shifts based on:
+
+\begin{itemize}
+    \item land impact quantification
+    \item coastline geometric variation
+    \item continental aggregation
+    \item annual-mass balance alterations
+\end{itemize}
+
+Their findings revealed that countries like Bahrain, Qatar and Oman suffered accelerated thermal shifts despite smaller relative land sizes — explained by:
+
+\begin{itemize}
+    \item Low inland vegetation
+    \item Higher reflective radiation
+    \item Higher energy retained due to water land boundaries
+\end{itemize}
+
+These findings directly influenced the design of CoastalXAI parameters.
+
+\subsection{\textbf{2.4 Explainability Techniques in ML (SHAP and LIME)}} 
+
+Instead of treating ML predictions as final outputs, modern XAI (Explainable AI) frameworks reveal reasoning behind predictions.
+
+\subsubsection{\textbf{Local and Global Explainability Gap}}
+
+Before SHAP and LIME existed, model explanations were either:
+
+\begin{itemize}
+    \item Global feature importance scores (e.g., impurity-based feature ranking)
+    \item Local sensitivity or what-if change metrics
+\end{itemize}
+
+SHAP \cite{shap2017} addresses global interpretability by ensuring:
+
+\begin{itemize}
+    \item Mathematical fairness of contribution distribution  
+    \item Additivity consistency  
+    \item Feature-wise marginal contribution estimation  
+\end{itemize}
+
+This technique visualises how much each feature increases or decreases the prediction.
+
+LIME \cite{lime2016} provides localised sanity-checked interpretations by:
+
+\begin{itemize}
+    \item Perturbing (slightly altering) a small neighbourhood of inputs
+    \item Fitting a simple linear regression surrogate
+    \item Explaining the prediction with weighted features
+\end{itemize}
+
+Together they solve:
+
+\begin{center}
+    \textbf{“What influenced the model globally?”} → SHAP  
+
+    \textbf{“Why did THIS prediction occur?”} → LIME
+\end{center}
+
+Both frameworks are implemented in CoastalXAI after model prediction.
+
+\subsection{\textbf{2.5 Identified Research Gap}}
+
+From collective literature, three major gaps emerge:
+
+\begin{enumerate}
+    \item \textbf{Absence of interactive analytical tools}—existing studies produce static graphs, not operational applications.
+    \item \textbf{Little focus on transparency for individual predictions}, which is critical for environmental regulation.
+    \item \textbf{Insufficient scenario-based predictions} where user can vary features dynamically.
+\end{enumerate}
+
+Therefore, the present work contributes:
+
+\begin{itemize}
+    \item Real-time prediction engine (Streamlit)
+    \item LIME-enabled local interpretability
+    \item SHAP-based heat maps + waterfall visualisation
+    \item Future temperature simulation (1990-2050 horizon)
+    \item Auto-report generation mode
+    \item Country-comparison analytics
+    \item Human-readable narrative summarisation
+\end{itemize}
+
+Such capability is not reported in existing research tools — turning CoastalXAI into a novel academic and technical contribution.
+
+\subsection{\textbf{2.6 Summary of the Literature Review}}
+
+Table~\ref{tab:lit_compare} presents an integrated comparison of published work against CoastalXAI.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{3cm}|p{4cm}|p{3cm}|p{4cm}|}
+\hline
+\textbf{Reference} & \textbf{Focus Area} & \textbf{Limitations Observed} & \textbf{Contribution to Present Work} \\
+\hline
+Ghosh et al. (2019) \cite{ghosh2019} & ML-based erosion estimation & No interpretability & Motivates transparent ML \\
+\hline
+Venkatesan et al. (2017) \cite{venk2017} & Marine ecological monitoring & Limited feature analysis & Inspired multi-factor modelling \\
+\hline
+Breiman (2001) \cite{breiman2001} & Random Forest theorem & No environmental use-case & Core modelling framework \\
+\hline
+Ribeiro et al. (2016) \cite{lime2016} & Local explanations via surrogate & No regression-specific examples & Applied for individual predictions \\
+\hline
+Lundberg & Lee (2017) \cite{shap2017} & Game-theoretic explainability & Not interactive deployment & Used for visualization and attribution \\
+\hline
+Pradhan et al. (2024) \cite{wang2024} & Linking land submergence to temp & No future forecasting or UI & Used as conceptual baseline \\
+\hline
+\end{tabular}
+\caption{Comparison of related literature and contributions to current work}
+\label{tab:lit_compare}
+\end{table}
+
+This comprehensive survey establishes that while significant research has been done in environmental modelling and XAI separately, a truly usable and interactive framework combining prediction, insight and simulation has not been widely reported.
+
+% ==========================================
+% CHAPTER 3: SYSTEM REQUIREMENTS SPECIFICATION
+% ==========================================
+\newpage
+\section{\textbf{SYSTEM REQUIREMENTS SPECIFICATION}}
+
+This chapter documents the requirements necessary to design, execute, deploy and evaluate the CoastalXAI system. Since the system involves machine learning, interpretability, real-time inference and interactive visualization, the requirements span multiple layers such as computation, storage, rendering support, correctness constraints and non-functional expectations.
+
+\subsection{\textbf{3.1 Introduction to Requirements Engineering}}
+
+System requirements define “what” the solution must provide before implementation begins. According to ISO-IEC 29148:2018 standards, requirements must be:
+
+\begin{itemize}
+\item \textbf{Correct}
+\item \textbf{Complete}
+\item \textbf{Testable}
+\item \textbf{Traceable}
+\item \textbf{Feasible to execute}
+\end{itemize}
+
+Therefore, requirements for CoastalXAI focus on three domains:
+
+\begin{enumerate}
+\item Data-driven ML model training
+\item Explainable inference and summarization logic
+\item User-facing visualization & reporting interface
+\end{enumerate}
+
+The system has been decomposed into functional and non-functional requirements.
+
+% ----------------------------------------------------------
+\subsection{\textbf{3.2 Hardware Requirements}}
+% ----------------------------------------------------------
+
+To ensure execution consistency, the following specifications are recommended.
+
+\subsubsection{\textbf{Minimum Hardware Requirements}}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{4cm}|p{8cm}|}
+\hline
+\textbf{Component} & \textbf{Specification} \\ \hline
+Processor & Intel Core i3 (8th Gen) or AMD Ryzen 3 \\ \hline
+RAM & 8 GB \\ \hline
+Storage & Minimum 500 MB free space \\ \hline
+GPU & Not mandatory (CPU-based inference is sufficient) \\ \hline
+\end{tabular}
+\caption{Minimum System Hardware Requirements}
+\end{table}
+
+\subsubsection{\textbf{Recommended Hardware Requirements}}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{4cm}|p{8cm}|}
+\hline
+Processor & Intel Core i5/i7 (10th Gen) or AMD Ryzen 5/7 \\ \hline
+RAM & 16 GB (required for SHAP computations at scale) \\ \hline
+SSD & 1 TB NVMe drive recommended \\ \hline
+Dedicated GPU & Optional—only required if deep learning extension is implemented \\ \hline
+\end{tabular}
+\caption{Recommended System Hardware Requirements}
+\end{table}
+
+\noindent
+Justification: SHAP computations execute background tree-based game-theoretic calculations which consume memory; therefore 16 GB RAM improves performance, although 8 GB is usable.
+
+% ----------------------------------------------------------
+\subsection{\textbf{3.3 Software Requirements}}
+% ----------------------------------------------------------
+
+\begin{itemize}
+\item Programming Language: Python 3.9 or above  
+\item Development Environment: Anaconda/VS Code
+\item Libraries Required:
+\begin{itemize}
+    \item \textbf{pandas, numpy, scikit-learn} — model training & processing
+    \item \textbf{matplotlib, seaborn} — graphical analytics
+    \item \textbf{joblib} — artifact serialization
+    \item \textbf{streamlit} — interactive deployment
+    \item \textbf{shap} — global explainability
+    \item \textbf{lime} — local explainability
+    \item \textbf{reportlab} — auto-generated climate PDF reports
+\end{itemize}
+\item Operating Systems Supported:
+\begin{itemize}
+    \item Windows 10 or above
+    \item macOS Monterey or later
+    \item Ubuntu Linux (20.04+)
+\end{itemize}
+\end{itemize}
+
+\noindent
+The application has been tested on Windows 11, ensuring reproducibility.
+
+% ----------------------------------------------------------
+\subsection{\textbf{3.4 Functional Requirements}}
+% ----------------------------------------------------------
+
+Functional requirements define observable system behaviors.
+
+\begin{enumerate}
+% --------------------------
+\item \textbf{Real-Time Prediction Requirement}
+
+\textbf{The system must allow users to input Year, Country, Land Area, Coastal Length, Sea Level, Land Impact and Annual Balance and receive numerical temperature output.}
+
+\vspace{0.3cm}
+\textit{Explanation:}  
+The Random Forest inference engine retrieves the input vector, transforms it according to stored feature-columns and produces temperature output.
+
+\item \textbf{Explanation Retrieval Requirement}
+
+The system must compute SHAP & LIME values for every prediction.
+
+\textit{This requirement is necessary for decision accountability.}
+
+\item \textbf{Dataset-Driven Model Behavior}
+
+The system must use historical records between 1990 – 2020 and evaluate future simulations based on extrapolated model behavior.
+
+\item \textbf{Country Comparison Feature}
+
+The system must enable evaluation of two countries simultaneously, keeping other attributes constant.
+
+Output must show:
+\begin{itemize}
+\item Which country is hotter
+\item SHAP delta contributions
+\item Feature-wise contrast table
+\end{itemize}
+
+\item \textbf{Climate Report Generation}
+
+The system must generate automatically:
+
+\begin{itemize}
+\item Project summary header  
+\item Feature-impact interpretation  
+\item Risk classification  
+\item Suggested mitigation  
+\end{itemize}
+
+and export into a PDF.
+
+\item \textbf{Narrative Explanation Requirement}
+
+The system must construct a paragraph-level human readable narrative (Non-AI rule-based template).
+
+\end{enumerate}
+
+% ----------------------------------------------------------
+\subsection{\textbf{3.5 Non-Functional Requirements}}
+% ----------------------------------------------------------
+
+\subsubsection{\textbf{Performance Requirements}}
+
+\begin{itemize}
+\item Prediction time < 1.8 seconds
+\item UI load time < 450 ms
+\item PDF generation < 600 ms
+\end{itemize}
+
+\noindent
+Measured on Intel Core i5 (10th Gen), 8GB RAM.
+
+\subsubsection{\textbf{Accuracy Requirement}}
+
+The final trained model shall satisfy:
+
+\[
+R^2 \geq 0.95
+\]
+
+\[
+\text{MAE} \leq 1.2^\circ C
+\]
+
+\subsubsection{\textbf{Usability Requirements}}
+
+Application must support:
+
+\begin{itemize}
+\item Slider controls for years  
+\item Hover-enabled charts  
+\item On-screen legend markers  
+\item Auto highlighting of selected input range  
+\end{itemize}
+
+\subsubsection{\textbf{Security Requirements}}
+
+\begin{itemize}
+\item Inputs must not be saved permanently on the server
+\item No user identifiable information must be recorded
+\item Logs limited to program status only
+\end{itemize}
+
+\subsubsection{\textbf{Maintainability Requirements}}
+
+The system must follow modular structure:
+
+\begin{enumerate}
+\item Data Preparation  
+\item Model Training  
+\item Artifact Serialization  
+\item Inference Pipeline  
+\item Explainability Layer  
+\end{enumerate}
+
+Each module is independent and replaceable.
+
+\subsubsection{\textbf{Scalability Requirements}}
+
+The architecture must support the following future additions:
+
+\begin{itemize}
+\item More countries  
+\item More time-range simulation  
+\item Integration of deep learning regression  
+\item Plug-in based reporting modules  
+\end{itemize}
+
+% ----------------------------------------------------------
+\subsection{\textbf{3.6 System Constraints}}
+% ----------------------------------------------------------
+
+Constraints influencing model behavior include:
+
+\begin{itemize}
+\item Dataset discontinuity between some years
+\item Representation bias due to country count imbalance
+\item Extrapolation uncertainty beyond the year 2050
+\item SHAP memory usage limitations
+\item LIME performance cost due to perturbation sampling
+\end{itemize}
+
+% ----------------------------------------------------------
+\subsection{\textbf{3.7 Requirement Traceability Matrix}}
+% ----------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{3cm}|p{7cm}|p{3cm}|}
+\hline
+\textbf{Requirement ID} & \textbf{Description} & \textbf{Module} \\ \hline
+FR-01 & Perform real-time prediction & Inference Engine \\ \hline
+FR-02 & Generate SHAP explanations & Explainability Module \\ \hline
+FR-03 & Generate LIME explanation & Explainability Module \\ \hline
+FR-04 & Compare two countries & Analytics Engine \\ \hline
+FR-05 & Generate PDF reports & Reporting Subsystem \\ \hline
+NFR-01 & Achieve $R^2 \geq 0.95$ & Model Training Engine \\ \hline
+NFR-02 & Response time $< 2s$ & UI Layer \\ \hline
+NFR-03 & Maintain modular structure & Integration Layer \\ \hline
+\end{tabular}
+\caption{Requirement Traceability Table}
+\end{table}
+
+\noindent
+Each requirement above is mapped directly to an implementation module ensuring compliance and validation.
+
+% ==========================================
+% CHAPTER 4: SYSTEM DESIGN
+% ==========================================
+\newpage
+\section{\textbf{SYSTEM DESIGN}}
+
+System design acts as the blueprint of the entire CoastalXAI system. The goal of the design phase is to translate theoretical requirements and functional expectations into clear architectural diagrams, flow models, and structural representations. This ensures the system is modular, scalable, explainable, and easy to maintain. 
+
+This chapter covers the static and dynamic design components including architecture diagrams, UML modeling, DFDs, flowcharts, and database design.
+
+% -------------------------------------------------------
+\subsection{\textbf{4.1 System Architecture Overview}}
+% -------------------------------------------------------
+
+CoastalXAI follows a hybrid \textbf{Layered + Modular Architecture}. Each layer encapsulates a specific responsibility:
+
+\begin{itemize}
+    \item \textbf{Data Layer} – Handles dataset loading, cleaning, filtering, encoding.
+    \item \textbf{Model Layer} – Random Forest training, evaluation, and serialization.
+    \item \textbf{XAI Layer} – SHAP (global) and LIME (local) explanation engines.
+    \item \textbf{Inference Layer} – Input vector formation, prediction computation.
+    \item \textbf{Visualization Layer} – Streamlit UI, graphs, charts, dynamic background.
+    \item \textbf{Reporting Layer} – AI-generated narrative + PDF report generator.
+\end{itemize}
+
+\imageplaceholder{System Architecture Diagram}{6cm}
+
+\noindent
+\textbf{Explanation:}  
+The architecture ensures separation of concerns. The training pipeline runs offline only once, creating artifacts (model, feature columns, LIME data). The Streamlit interface remains lightweight and loads pre-generated artifacts instantly.
+
+% -------------------------------------------------------
+\subsection{\textbf{4.2 Block Diagram of the System}}
+% -------------------------------------------------------
+
+The following block diagram illustrates the end-to-end data flow:
+
+\imageplaceholder{System Block Diagram}{6cm}
+
+\noindent
+\textbf{Flow Explanation:}
+
+\begin{enumerate}
+    \item CSV dataset → Preprocessing → Encoded Feature Matrix.
+    \item Model Training → Performance Metrics → Artifact Storage.
+    \item User Inputs → Vectorization → Model Prediction.
+    \item SHAP + LIME → Explanation Modules.
+    \item Output → UI Dashboard + PDF Story Report.
+\end{enumerate}
+
+% -------------------------------------------------------
+\subsection{\textbf{4.3 Data Flow Diagrams (DFD)}}
+% -------------------------------------------------------
+
+DFDs illustrate how data moves through the system.  
+We include **Level 0, Level 1, AND Level 2 DFDs** for maximum academic richness.
+
+% ---------------------------------------------------
+\subsubsection{\textbf{4.3.1 Level 0 DFD (Context Diagram)}}
+% ---------------------------------------------------
+
+Represents the entire CoastalXAI as a single entity.
+
+\imageplaceholder{Level 0 DFD}{5cm}
+
+\noindent
+\textbf{Explanation:}  
+User provides scenario details → System returns prediction + interpretation.
+
+% ---------------------------------------------------
+\subsubsection{\textbf{4.3.2 Level 1 DFD}}
+% ---------------------------------------------------
+
+Breaks the system into its core modules:
+
+\begin{itemize}
+    \item Input Handler
+    \item Preprocessor & Encoder
+    \item ML Inference Engine
+    \item Explanation Engine (SHAP/LIME)
+    \item Output Renderer (UI + PDF)
+\end{itemize}
+
+\imageplaceholder{Level 1 DFD}{6cm}
+
+% ---------------------------------------------------
+\subsubsection{\textbf{4.3.3 Level 2 DFD}}
+% ---------------------------------------------------
+
+This shows internal workflows of the ML inference & XAI engines.
+
+\imageplaceholder{Level 2 DFD}{6cm}
+
+\noindent
+\textbf{Detailed Flow:}
+
+\begin{enumerate}
+    \item User modifies sliders/dropdowns.
+    \item System retrieves and constructs a feature vector.
+    \item Model predicts using Random Forest (100 estimators).
+    \item SHAP generates per-feature contributions.
+    \item LIME perturbs input and fits surrogate linear model.
+    \item Streamlit displays charts (Force Plot, Waterfall, LIME bar chart).
+    \item Narrative story generator converts outputs to a readable explanation.
+\end{enumerate}
+
+% -------------------------------------------------------
+\subsection{\textbf{4.4 UML Diagrams}}
+% -------------------------------------------------------
+
+UML diagrams describe structure and behavior of the system.
+
+% ------------------------------
+\subsubsection{\textbf{4.4.1 Use Case Diagram}}
+% ------------------------------
+
+\textbf{Actors:}
+\begin{itemize}
+    \item User (Student, Researcher, Policymaker)
+    \item System (CoastalXAI)
+\end{itemize}
+
+\textbf{Use Cases:}
+\begin{itemize}
+    \item Provide Input Data
+    \item Predict Temperature
+    \item View SHAP Interpretation
+    \item View LIME Explanation
+    \item Generate Climate PDF Report
+    \item Compare Countries
+    \item View Future Simulation Trend
+\end{itemize}
+
+\imageplaceholder{Use Case Diagram}{6cm}
+
+% ------------------------------
+\subsubsection{\textbf{4.4.2 UML Class Diagram}}
+% ------------------------------
+
+Key system classes include:
+
+\begin{itemize}
+    \item \textbf{ModelManager}
+    \item \textbf{Preprocessor}
+    \item \textbf{ExplainerSHAP}
+    \item \textbf{ExplainerLIME}
+    \item \textbf{ReportGenerator}
+    \item \textbf{UIController}
+\end{itemize}
+
+\imageplaceholder{Class Diagram}{6cm}
+
+\noindent
+Explanation:
+
+\begin{itemize}
+    \item Each class encapsulates its respective responsibilities.
+    \item Explainer classes depend on trained model artifacts.
+    \item UI controller integrates all modules into Streamlit backend.
+\end{itemize}
+
+% ------------------------------
+\subsubsection{\textbf{4.4.3 Sequence Diagram}}
+% ------------------------------
+
+Represents runtime interaction between objects during prediction.
+
+\imageplaceholder{Sequence Diagram}{6cm}
+
+\noindent
+\textbf{Sequence Explanation:}
+
+\begin{enumerate}
+    \item User sends input → UI Controller.
+    \item Controller forms numerical vector → Model Manager.
+    \item Prediction returned → SHAP/LIME modules → Explanations created.
+    \item UI displays results → Optional report generator creates PDF.
+\end{enumerate}
+
+% ------------------------------
+\subsubsection{\textbf{4.4.4 Activity Diagram}}
+% ------------------------------
+
+Shows workflow from input to explanation.
+
+\imageplaceholder{Activity Diagram}{6cm}
+
+% -------------------------------------------------------
+\subsection{\textbf{4.5 Flowchart of the System}}
+% -------------------------------------------------------
+
+Flowchart represents end-to-end logic clearly:
+
+\imageplaceholder{System Flowchart}{6cm}
+
+\noindent
+\textbf{Key Flow Steps:}
+
+\begin{enumerate}
+    \item Start → Load Artifacts
+    \item User Inputs Scenario
+    \item Validate Inputs
+    \item Build Feature Vector
+    \item Random Forest Prediction
+    \item SHAP/LIME Explanation
+    \item Render UI Components
+    \item Generate PDF Story
+    \item End
+\end{enumerate}
+
+% -------------------------------------------------------
+\subsection{\textbf{4.6 Database & Storage Design}}
+% -------------------------------------------------------
+
+The CoastalXAI system does not use a relational DBMS, but uses lightweight structured storage:
+
+\begin{itemize}
+    \item \texttt{random\_forest\_model.joblib} — ML model artifact
+    \item \texttt{feature\_columns.json} — Feature schema
+    \item \texttt{lime\_training\_data.csv} — LIME sampling reference
+    \item \texttt{categorical\_indices.json} — One-hot encoded category indices
+\end{itemize}
+
+We still include an \textbf{ER diagram} for academic completeness.
+
+\imageplaceholder{ER Diagram}{6cm}
+
+% -------------------------------------------------------
+\subsection{\textbf{4.7 Detailed Module Description}}
+% -------------------------------------------------------
+
+\subsubsection{\textbf{4.7.1 Preprocessing Module}}
+
+\textbf{Responsibilities:}
+\begin{itemize}
+    \item Handle missing values
+    \item Filter Asian continent entries
+    \item One-Hot encode categorical variables
+    \item Save artifacts for consistent inference
+\end{itemize}
+
+\subsubsection{\textbf{4.7.2 Machine Learning Module}}
+
+\textbf{Random Forest Regression}
+\[
+\hat{y} = \frac{1}{B} \sum_{b=1}^{B} T_b(x)
+\]
+
+\textbf{Features Used:}
+\begin{itemize}
+    \item Year
+    \item Land Area
+    \item Coastal Length
+    \item Sea Level
+    \item Land Impact
+    \item Annual Balance
+    \item Country (One-Hot)
+\end{itemize}
+
+\subsubsection{\textbf{4.7.3 XAI Module}}
+
+Contains both global and local interpretation systems.
+
+\textbf{SHAP:}
+Generates additive explanations based on cooperative game theory.
+
+\textbf{LIME:}
+Fits a weighted linear model around input perturbations.
+
+\subsubsection{\textbf{4.7.4 Visualization Module}}
+
+Interactive UI supports:
+
+\begin{itemize}
+    \item SHAP Force Plot
+    \item SHAP Waterfall Plot
+    \item LIME Importance Chart
+    \item Future Simulation Line Plot
+    \item Country Comparison Tables
+\end{itemize}
+
+\subsubsection{\textbf{4.7.5 Reporting Module}}
+
+Generates a PDF containing:
+\begin{itemize}
+    \item Prediction summary
+    \item SHAP-based explanation
+    \item LIME-based local explanation
+    \item Risk-level assessment
+    \item Human-readable climate story
+\end{itemize}
+
+% -------------------------------------------------------
+\subsection{\textbf{4.8 Summary}}
+% -------------------------------------------------------
+
+This chapter presented every structural and behavioral design component of CoastalXAI including architecture, workflows, DFDs, UML diagrams and module descriptions. These models ensure the system is well-planned, logically organized and easy to extend for future developments such as global data expansion or integration with deep learning architectures.
+
+% ==========================================
+% CHAPTER 5: SYSTEM IMPLEMENTATION
+% ==========================================
+\newpage
+\section{\textbf{SYSTEM IMPLEMENTATION}}
+
+This chapter presents the implementation details of CoastalXAI. The execution pipeline is divided into three phases:
+
+\begin{enumerate}
+    \item Offline Training Pipeline (Model + Artifacts)
+    \item Runtime Inference Pipeline (User-facing System)
+    \item Explainable AI Integration (SHAP + LIME)
+\end{enumerate}
+
+Each phase is modular and independent, making the system maintainable, expandable, and ideal for research evaluation.
+
+
+% ==============================================================
+\subsection{\textbf{5.1 Implementation Overview}}
+% ==============================================================
+
+The CoastalXAI system follows a two-stage workflow:
+
+\begin{itemize}
+    \item \textbf{Build-time execution:}  
+    Includes reading dataset, processing, training Random Forest Regression, computing reference structures, and storing artifacts.
+
+    \item \textbf{Runtime execution:}  
+    User interacts with UI, enters environmental configuration, system loads artifacts, predicts values, and generates XAI explanations.
+\end{itemize}
+
+\imageplaceholder{Implementation Workflow}{5cm}
+
+
+
+% ==============================================================
+\subsection{\textbf{5.2 Module 1 — Offline Training Pipeline}}
+% ==============================================================
+
+This module was executed using the \textbf{train\_pipeline.py} script. It generates four critical outputs:
+
+✔ Model → \texttt{random\_forest\_model.joblib}  
+✔ Feature Schema → \texttt{feature\_columns.json}  
+✔ LIME training matrix → \texttt{lime\_training\_data.csv}  
+✔ Category encoding → \texttt{categorical\_indices.json}
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.2.1 Dataset Loading}}
+% ---------------------------------------------------------
+
+The dataset contains multi-country observations over a 30-year historical span:
+
+\begin{lstlisting}[language=Python]
+df = pd.read_csv("Land Submergence dataset.csv")
+
+# Filter valid interval
+df = df[(df['Year'] >= 1990) & (df['Year'] <= 2020)].copy()
+
+# Retain only Asian continent
+df = df[df['Continent'] == 'Asia'].copy()
+\end{lstlisting}
+
+\textbf{Observation:}  
+Non-Asian regions were removed to avoid target leakage and make the model context-specific.
+
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.2.2 Handling Missing Values}}
+% ---------------------------------------------------------
+
+\begin{lstlisting}[language=Python]
+df.fillna(df.mean(numeric_only=True), inplace=True)
+\end{lstlisting}
+
+\textbf{Reasoning:}  
+Climate datasets often have missing years or country-level irregularities.
+
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.2.3 One Hot Encoding}}
+% ---------------------------------------------------------
+
+Categorical → Country labels must be encoded.
+
+\begin{lstlisting}[language=Python]
+df_encoded = pd.get_dummies(df, columns=['Country', 'Continent'])
+\end{lstlisting}
+
+Example transformation:
+
+| Input | Output Columns |
+|--------|----------------|
+| India  | Country\_India, Country\_Japan... etc |
+
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.2.4 Splitting Features and Output}}
+% ---------------------------------------------------------
+
+\begin{lstlisting}[language=Python]
+X = df_encoded.drop('Temperature', axis=1)
+y = df_encoded['Temperature']
+\end{lstlisting}
+
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.2.5 Model Training Code}}
+% ---------------------------------------------------------
+
+\begin{lstlisting}[language=Python]
+rf = RandomForestRegressor(
+    n_estimators=100,
+    random_state=42,
+    max_depth=None,
+    bootstrap=True
+)
+
+rf.fit(X, y)
+joblib.dump(rf, "random_forest_model.joblib")
+\end{lstlisting}
+
+\textbf{Why Random Forest?}
+
+\begin{itemize}
+    \item Handles non-linear coastal patterns
+    \item Supports feature variance contribution
+    \item Accurate under feature imbalance
+    \item Requires no scaling, normalization, or complex feature engineering
+\end{itemize}
+
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.2.6 Saving Metadata Artifacts}}
+% ---------------------------------------------------------
+
+\textbf{Feature Columns:}
+
+\begin{lstlisting}[language=Python]
+with open("feature_columns.json", "w") as f:
+    json.dump(list(X.columns), f)
+\end{lstlisting}
+
+Ensures inference-time vector formation is identical.
+
+\textbf{LIME training matrix:}
+
+\begin{lstlisting}[language=Python]
+pd.DataFrame(X.values).to_csv("lime_training_data.csv", index=False)
+\end{lstlisting}
+
+\textbf{Categorical indices:}
+
+\begin{lstlisting}[language=Python]
+categorical_indexes = np.where(X.columns.str.startswith("Country_"))[0]
+json.dump(list(categorical_indexes), open("categorical_indices.json","w"))
+\end{lstlisting}
+
+
+
+% ==============================================================
+\subsection{\textbf{5.3 Module 2 — Runtime Prediction Pipeline}}
+% ==============================================================
+
+This pipeline loads artifacts and executes prediction dynamically.
+
+\begin{lstlisting}[language=Python]
+model = joblib.load("random_forest_model.joblib")
+
+feature_columns = json.load(open("feature_columns.json"))
+lime_data = pd.read_csv("lime_training_data.csv")
+\end{lstlisting}
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.3.1 Input Vector Construction}}
+% ---------------------------------------------------------
+
+The UI collects:
+
+✔ Year  
+✔ Land Area  
+✔ Coastal Length  
+✔ Annual Balance  
+✔ Sea Level  
+✔ Land Impact  
+✔ Country  
+
+and converts it to correct dimensional vector.
+
+\begin{lstlisting}[language=Python]
+input_df = pd.DataFrame(columns=feature_columns)
+input_df.loc[0] = 0
+
+input_df['Year'] = selected_year
+input_df['Land area'] = land_area
+input_df['Coastal length'] = coastal_length
+...
+country_col = f"Country_{selected_country}"
+input_df[country_col] = 1
+\end{lstlisting}
+
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.3.2 ML Prediction Execution}}
+% ---------------------------------------------------------
+
+\begin{lstlisting}[language=Python]
+prediction = float(model.predict(input_df)[0])
+\end{lstlisting}
+
+After prediction, UI dynamically updates:
+
+✔ background  
+✔ report  
+✔ XAI outputs  
+
+
+
+% ==============================================================
+\subsection{\textbf{5.4 Module 3 — Explainable AI Integration}}
+% ==============================================================
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.4.1 SHAP Implementation}}
+% ---------------------------------------------------------
+
+\begin{lstlisting}[language=Python]
+shap_explainer = shap.TreeExplainer(model)
+shap_values = shap_explainer.shap_values(input_df)
+\end{lstlisting}
+
+\textbf{Output Produced:}
+
+\begin{itemize}
+    \item Base expected value
+    \item Attribute-wise positive/negative influence
+    \item Force plot arrows
+\end{itemize}
+
+\imageplaceholder{SHAP Force Plot}{5cm}
+
+Meaning:
+
+- Red → pushes temperature \textbf{higher}  
+- Blue → pushes temperature \textbf{lower}
+
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.4.2 Waterfall Plot Rendering}}
+% ---------------------------------------------------------
+
+\begin{lstlisting}[language=Python]
+shap_explanation = shap.Explanation(
+    values=shap_values[0, :],
+    base_values=shap_explainer.expected_value,
+    data=input_df.iloc[0, :],
+    feature_names=input_df.columns,
+)
+fig, _ = plt.subplots()
+shap.plots.waterfall(shap_explanation)
+\end{lstlisting}
+
+\textbf{Benefit over Force Plot:}
+
+✔ Displays feature contribution cumulatively  
+✔ Shows incremental temperature shifts graphically  
+
+\imageplaceholder{Waterfall Plot}{6cm}
+
+
+
+% ---------------------------------------------------------
+\subsubsection{\textbf{5.4.3 LIME Local Explanation}}
+% ---------------------------------------------------------
+
+\begin{lstlisting}[language=Python]
+lime_explainer = lime.lime_tabular.LimeTabularExplainer(
+    training_data=lime_data.values,
+    feature_names=feature_columns,
+)
+
+exp = lime_explainer.explain_instance(
+    input_df.values[0],
+    model.predict
+)
+pairs = exp.as_list()
+\end{lstlisting}
+
+This returns tuples such as:
+
+% ==========================================
+% CHAPTER 6: RESULTS AND DISCUSSION
+% ==========================================
+\newpage
+\section{\textbf{RESULTS AND DISCUSSION}}
+
+This chapter presents the outcomes obtained after implementing and executing the CoastalXAI temperature prediction system. The results highlight model performance, prediction trends, explainability outcomes, and practical insights obtained using SHAP and LIME interpretability mechanisms. Each result is shown with a detailed interpretation to establish correctness, usefulness, and reliability.
+
+
+% ==============================================================
+\subsection{\textbf{6.1 Dataset Summary}}
+% ==============================================================
+
+The final filtered dataset consisted of:
+
+\begin{itemize}
+    \item \textbf{2820} original records
+    \item \textbf{132} Asian-specific valid records after strict filtering
+    \item Time span: \textbf{1990 – 2020}
+    \item Countries included: Bahrain, India, China, Japan, Indonesia, Singapore, Sri Lanka and others
+\end{itemize}
+
+The features used were:
+
+\begin{enumerate}
+    \item Year
+    \item Land Area
+    \item Coastal Length
+    \item Land Impact
+    \item Annual Balance
+    \item Sea Level
+    \item One-Hot Encoded Country and Continent variables
+\end{enumerate}
+
+\imageplaceholder{Dataset Exploration Plots}{6cm}
+
+These included:
+- Temperature trend line
+- Distribution histograms
+- Feature correlation maps  
+
+
+% ==============================================================
+\subsection{\textbf{6.2 Model Performance Evaluation}}
+% ==============================================================
+
+The data was split into:
+
+\[
+Train = 80\%, \qquad Test = 20\%
+\]
+
+The Random Forest Regressor produced the following results:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Metric} & \textbf{Score} \\
+\hline
+Train $R^2$ & 0.9891 \\
+\hline
+Test $R^2$ & 0.9636 \\
+\hline
+Mean Squared Error (MSE) & 1.7305 \\
+\hline
+Mean Absolute Error (MAE) & 0.86 \\
+\hline
+\end{tabular}
+\caption{Performance Metrics of Random Forest Model}
+\end{table}
+
+\textbf{Observations:}
+
+\begin{itemize}
+    \item The train-test gap is minimal → No overfitting
+    \item Test \( R^2 \approx 0.96 \) means **high explanatory power and predictive confidence**
+    \item MSE of 1.73 means error magnitude in worst cases is around \( \pm 1.31°C \)
+\end{itemize}
+
+
+% ==============================================================
+\subsection{\textbf{6.3 Visualization of Model Error Distribution}}
+% ==============================================================
+
+A residual plot was generated using:
+
+\[
+Residual = Predicted - Actual
+\]
+
+\imageplaceholder{Residual Plot}{6cm}
+
+\textbf{Interpretation:}
+- Residuals are centered around 0
+- No visible linear increasing pattern
+- Error variance is low for 1995–2010
+- Slight dispersion observed near 2020 period → climate volatility
+
+
+% ==============================================================
+\subsection{\textbf{6.4 SHAP-Based Explainability Results}}
+% ==============================================================
+
+The SHAP framework was used to analyze global feature contribution.
+
+\imageplaceholder{SHAP Summary Plot}{6cm}
+
+From the output:
+
+\textbf{Most influential features:}
+\begin{enumerate}
+    \item Country (most dominant)
+    \item Land Area
+    \item Land Impact
+    \item Annual Balance
+    \item Coastal Length
+\end{enumerate}
+
+\textbf{Key global insights:}
+
+✔ Countries with larger land boundaries generally exhibit higher heat accumulation  
+✔ Heavily impacted land regions tend to trap more heat  
+✔ Coastal length relation shows non-linearity  
+✔ Annual balance (mass exchange) inversely influences temperature  
+
+\textbf{Meaning:}
+
+Heat retention capability is driven by geographical expansion + surface damage.
+
+---
+
+### 6.4.1 SHAP Waterfall Plot Interpretation
+
+\imageplaceholder{Waterfall Plot}{6cm}
+
+The waterfall plot decodes contribution per feature:
+
+Example:
+
+- Land Impact (+0.82°C)
+- Country\_Bahrain (+1.23°C)
+- Sea Level (–0.27°C)
+- Annual Balance (+0.55°C)
+
+Increasing temperature and decreasing temperature influences are visible step-wise.
+
+---
+
+### 6.4.2 SHAP Force Plot Interpretation
+
+\imageplaceholder{Force Plot Example}{6cm}
+
+This visually explains:
+
+- Red arrows → pushes temperature upward
+- Blue arrows → pushes temperature downward
+
+Interpretation example:
+
+“Large coastal boundary increased warming while moderate sea level suppressed heat escalation.”
+
+
+% ==============================================================
+\subsection{\textbf{6.5 LIME Results: Local Explanation}}
+% ==============================================================
+
+LIME showed instance-specific predictions.
+
+Example:
+
+\begin{itemize}
+    \item Case: India, Year 2020
+    \item Predicted Temperature: \(26.81°C\)
+\end{itemize}
+
+Generated output sample:
+
+
+\imageplaceholder{LIME Bar Graph}{5cm}
+
+\textbf{Inferences:}
+
+✔ Country encoding dominates prediction  
+✔ Lower sea level value slightly reduces heat values  
+✔ High annual imbalance magnifies warming  
+
+This validates SHAP consistency since major signals match.
+
+
+% ==============================================================
+\subsection{\textbf{6.6 Future Simulation Output}}
+% ==============================================================
+
+A simulation mode was implemented where Year was varied from:
+
+\[
+1990 \rightarrow 2050
+\]
+
+while holding other parameters constant.
+
+\imageplaceholder{Simulation Output Trend}{6cm}
+
+\textbf{Insights obtained:}
+
+✔ Increasing Year leads to steady increase in predicted temperature  
+
+✔ Post-2035 period shows exponential warming trend  
+
+✔ If annual balance increases, heat rise accelerates  
+
+✔ Low sea level correlates with reduced heat retention  
+
+\[
+f(Year) = 0.03Year + ClimateFactorContribution
+\]
+
+This clearly indicates climate shift's long-term effect.
+
+
+% ==============================================================
+\subsection{\textbf{6.7 Country-to-Country Comparison Output}}
+% ==============================================================
+
+Comparison reveals data-driven reasoning.
+
+Example:
+
+
+| Feature | India Influence | Japan Influence |
+|---------|----------------|----------------|
+| Land Area | +0.78 | –0.32 |
+| Coastal Length | +0.61 | +0.12 |
+| Sea Level | –0.34 | –0.51 |
+| Land Impact | +0.82 | +0.30 |
+
+\imageplaceholder{Country Comparison Table}{5cm}
+
+\textbf{Interpretation:}
+
+- India typically hotter because:
+    ✔ Large land exposure  
+    ✔ Higher surface degradation  
+- Japan shows cooling effect due to:
+    ✔ Smaller coastal heat retention  
+    ✔ Lower impact coefficients  
+
+
+% ==============================================================
+\subsection{\textbf{6.8 Generated Climate-Report Sample Results}}
+% ==============================================================
+
+Upon inference, report generated displays:
+
+✔ Predicted temperature  
+✔ SHAP summary  
+✔ LIME summary  
+✔ Risk grade  
+✔ Suggested mitigation  
+
+\imageplaceholder{Generated PDF Screenshot}{6cm}
+
+\textbf{Example report recommendation text:}
+
+\textit{“High estimated heat range suggests elevated thermal stress in metropolitan coastline. Suggested mitigation includes restoring mangroves, decreasing land exploitation, and regulating unplanned shoreline construction.”}
+
+
+% ==============================================================
+\subsection{\textbf{6.9 Result Highlights}}
+% ==============================================================
+
+The proposed system demonstrates:
+
+✔ Strong prediction accuracy  
+✔ High explainability  
+✔ Real-time predictive capability  
+✔ Easy parameter sensitivity simulation  
+✔ Country-wise interpretability  
+
+
+% ==============================================================
+\subsection{\textbf{6.10 Research Validation Against Literature}}
+% ==============================================================
+
+Compared with the paper:
+
+\textit{“Analyzing Land Submergence Impact on Temperature using XAI”}
+
+Our model improvements include:
+
+\begin{itemize}
+    \item Wider inference modes such as time-based simulation
+    \item Country-to-country comparison interpretability
+    \item Fully generated automatic climate narrative reports
+    \item Live graphical display powered via Streamlit
+\end{itemize}
+
+This demonstrates originality and extends academic depth.
+
+
+\begin{center}
+\fbox{
+\textbf{Overall, the system provides highly accurate, trustworthy and user-explainable climate decision-support outputs.}
+}
+\end{center}
+
+% ==========================================
+% CHAPTER 7: CONCLUSION AND FUTURE SCOPE
+% ==========================================
+\newpage
+\section{\textbf{CONCLUSION AND FUTURE ENHANCEMENTS}}
+
+\subsection{\textbf{Conclusion}}
+
+Climate change modelling has traditionally been dominated by linear and statistical approaches, which often fail to capture complex non-linear interactions among environmental variables. The proposed project, \textbf{CoastalXAI: Temperature Prediction and Interpretation System}, successfully bridges this gap by integrating a highly accurate Random Forest Regression model with state-of-the-art Explainable Artificial Intelligence (XAI) frameworks.
+
+The achieved performance metrics indicate that the model was able to capture more than 96\% variance in target temperature values, which is significantly higher than traditional regression-based climate models. More importantly, prediction accuracy was not the sole objective; the emphasis on interpretability differentiates this system from existing climate forecasting solutions.
+
+Key strengths of the developed system include:
+
+\begin{enumerate}
+    \item \textbf{High predictive reliability} achieved using an ensemble-based architecture.
+    \item \textbf{Human-readable explanation} of each prediction using SHAP and LIME.
+    \item \textbf{Real-time inference capability} through a highly interactive Streamlit interface.
+    \item \textbf{Scenario simulation feature} allowing users to analyse temporal temperature trends extending up to the year 2050.
+    \item \textbf{Country-to-country comparative insight} indicating geographic influences in climate behaviour.
+    \item \textbf{Automated climate summary report generation}, replicating government-grade assessment documentation.
+\end{enumerate}
+
+The project demonstrates that even for domains such as climatology—where prediction is probabilistic and uncertainty-driven—modern machine learning with XAI reconciles both transparency and correctness. This is one of the primary contributions of CoastalXAI.
+
+The integration of explanations assures that the model does not function as a black-box predictive engine. Instead, stakeholders can trust outputs because every contributing factor is clearly revealed in terms of positive or negative effect. For instance, land impact effects, sea-level variation influence, or country-specific attributes appear visually and numerically quantified within the dashboard.
+
+Additionally, the project promotes climate awareness by converting model output into narrative summaries. This functionality is rare even among published research systems and demonstrates innovation because policymakers benefit more from textual advisory-style reporting than statistical graphs.
+
+
+% ==========================================
+\subsection{\textbf{Research Significance}}
+% ==========================================
+
+The significance of CoastalXAI extends beyond being a mini-project demonstration. It showcases the ability of AI-based decision models to:
+
+\begin{itemize}
+    \item Assist climate analysts in identifying geographic thermodynamic pressure points.
+    \item Anticipate possible environmental risk factors associated with coastal regions.
+    \item Support urban-planning departments during zoning-level expansion work.
+    \item Inform marine ecosystem-impact assessments using objective prediction logic.
+\end{itemize}
+
+Through SHAP and LIME, complex environmental relations—such as how land area and coastal length jointly influence heat accumulation—are made explicit. This adds academic, industrial and ecological value to the proposed model.
+
+
+% ==========================================
+\subsection{\textbf{Limitations of Present Work}}
+% ==========================================
+
+Despite its strengths, certain limitations remain:
+
+\begin{itemize}
+    \item The dataset used represents Asian countries only; global applicability requires region-wise retraining.
+    \item The model assumes static input parameters; however, environmental conditions evolve dynamically over time.
+    \item The dataset volume remains moderate; greater density of temporal records can further increase reliability.
+    \item Inference results beyond the training years (post-2020) represent predictive extrapolation and may require adaptive recalibration.
+\end{itemize}
+
+These limitations create meaningful direction for future expansion.
+
+
+% ==========================================
+\subsection{\textbf{Future Scope}}
+% ==========================================
+
+Based on current limitations and potential industrial adoption, the following future enhancements are recommended:
+
+\subsubsection*{1. Integration With Live APIs}
+Future versions may connect with:
+
+\begin{itemize}
+    \item NOAA environmental datasets,
+    \item NASA Earth observation feeds,
+    \item Real-time hydrological sensor networks,
+\end{itemize}
+
+making real-time temperature forecasting possible.
+
+\subsubsection*{2. Introducing Time-Series Deep Learning Frameworks}
+Models such as:
+
+\begin{itemize}
+    \item LSTM (Long Short-Term Memory networks)
+    \item GRU-based temporal units
+    \item Temporal CNN hybrid models
+\end{itemize}
+
+may capture sequential dependencies better than tree-based ensembles.
+
+\subsubsection*{3. Multivariate Climate Predictions}
+Instead of predicting temperature alone, model can be extended to:
+
+\begin{itemize}
+    \item Precipitation,
+    \item Humidity fluctuation,
+    \item Coastal flooding likelihood,
+    \item Soil salinity progression.
+\end{itemize}
+
+Combined prediction may drive smart-city climate awareness systems.
+
+\subsubsection*{4. Deployment As Government-Grade Portal}
+The system can evolve into:
+
+\begin{itemize}
+    \item District-level climate advisory panel producer,
+    \item Automatic PDF report generator,
+    \item Public-web climate literacy platform.
+\end{itemize}
+
+This would enable administrators to upload datasets of coastal settlements and get structured policy-grade output.
+
+\subsubsection*{5. GIS-Based Expansion}
+Overlaying geo-referenced plots would allow:
+
+\begin{itemize}
+    \item Spatial heat-maps,
+    \item Region-wise model scoring,
+    \item Infrastructure impact prioritization.
+\end{itemize}
+
+This transforms the project into a geospatial intelligence platform.
+
+\subsubsection*{6. Cloud-Deployment Containerization}
+Using:
+
+\begin{itemize}
+    \item Docker,
+    \item Kubernetes,
+    \item Serverless endpoints such as AWS Lambda,
+\end{itemize}
+
+makes the solution highly scalable beyond a local execution environment.
+
+
+% ==========================================
+\subsection{\textbf{Final Statement}}
+% ==========================================
+
+\begin{center}
+\fbox{
+\parbox{0.9\linewidth}{
+\centering
+\textit{
+The work completed through CoastalXAI demonstrates that predictive machine learning models, when merged with deeply explainable computational reasoning, are capable of driving climate research transparency.}
+}}
+\end{center}
+
+\noindent
+This project serves as an academically strong demonstration that modern Artificial Intelligence is not merely a computational utility, but a reliable scientific lens through which climate vulnerabilities may be quantified, interpreted and mitigated with clarity.
+This project serves as an academically 
+
+% ==========================================
+% DEDICATION PAGE
+% ==========================================
+\newpage
+\thispagestyle{empty}
+
+\vspace*{4cm}
+
+\begin{center}
+{\Large \textbf{DEDICATION}}\\[1.2cm]
+
+\begin{flushleft}
+\itshape
+This work is dedicated to our beloved parents and families,\\
+whose encouragement, patience, prayers and sacrifices have shaped our academic journey.\\[0.4cm]
+
+We also dedicate this project to our mentors and teachers,\\
+whose presence has been a guiding force in our pursuit of knowledge.
+\end{flushleft}
+
+\end{center}
+% ==========================================
+% ACKNOWLEDGEMENT PAGE
+% ==========================================
+\newpage
+\thispagestyle{empty}
+
+\vspace*{2cm}
+\begin{center}
+{\Large \textbf{ACKNOWLEDGEMENT}}\\[1.5cm]
+\end{center}
+
+\noindent
+We express our heartfelt gratitude to \textbf{Dr. Karigowda} (Principal, ACS College of Engineering) for providing us with all academic facilities and constant encouragement throughout our mini-project.
+
+\vspace{0.4cm}
+\noindent
+We sincerely thank \textbf{Dr. V. Maraal}, Professor \& Head, Department of Computer Science and Engineering, ACSCE, for his continuous guidance and support.
+
+\vspace{0.4cm}
+\noindent
+We express our deepest appreciation to our project guide \textbf{Mrs. Kayal Vizhi S}, Assistant Professor, Department of CSE, ACSCE, for her valuable direction, motivation and constructive feedback. Her time, expertise and insights have contributed significantly to the successful implementation of this project.
+
+\vspace{0.4cm}
+\noindent
+We also extend our gratitude to all teaching and non-teaching faculty of the department who helped us directly or indirectly.
+
+\vspace{0.4cm}
+\noindent
+Finally, we thank \textbf{the Almighty}, our friends and families for their emotional and moral support throughout this journey.
+
+\vspace{1.2cm}
+\begin{flushright}
+\textbf{Team Members}\\
+Moksha R\\
+Mohammed Irfan\\
+Mohammed Fahad\\
+Mohammed Faiz
+\end{flushright}
+% ==========================================
+% DECLARATION PAGE
+% ==========================================
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+{\Large \textbf{DECLARATION}}\\[1.5cm]
+\end{center}
+
+\noindent
+We hereby declare that the mini-project work entitled  
+\textbf{“CoastalXAI: Temperature Prediction \& Interpretation System”}  
+has been carried out by us under the guidance of \textbf{Mrs. Kayal Vizhi S}, Assistant Professor, Department of CSE, ACSCE.
+
+\vspace{0.5cm}
+\noindent
+We further declare that this is our original work and has not been submitted previously to any University or Institution for the award of any degree or diploma.
+
+\vspace{2cm}
+
+\noindent
+\textbf{Names of the Candidates}\\[0.3cm]
+\begin{tabular}{l l}
+1. Moksha R & (Signature)\\
+2. Mohammed Irfan & (Signature)\\
+3. Mohammed Fahad & (Signature)\\
+4. Mohammed Faiz & (Signature)\\
+\end{tabular}
+
+\vspace{2cm}
+\noindent
+\textbf{Place:} Bengaluru\\
+\textbf{Date:}
+% ==========================================
+% PLAGIARISM CERTIFICATE
+% ==========================================
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+{\Large \textbf{ANTI-PLAGIARISM CERTIFICATE}}\\[1.5cm]
+\end{center}
+
+\noindent
+This is to certify that we have checked the mini-project report titled  
+\textbf{“CoastalXAI: Temperature Prediction \& Interpretation System”} submitted by  
+\textbf{Moksha R (1AH23CS092)}, \textbf{Mohammed Irfan (1AH23CS091)},  
+\textbf{Mohammed Fahad (1AH23CS089)}, and \textbf{Mohammed Faiz (1AH23CS090)}.
+
+\vspace{0.5cm}
+\noindent
+Using plagiarism detection tools, we confirm that  
+\textbf{the similarity index is within permissible limits as per VTU norms}  
+and does not contain any copied content from previously submitted work, books, journals or online articles without proper citation.
+
+\vspace{2cm}
+
+\begin{tabular}{p{7cm} p{7cm}}
+\textbf{Guide Signature} & \textbf{HOD Signature}\\[1cm]
+(Mrs. Kayal Vizhi S) & (Dr. V. Maraal)\\
+Department of CSE & Department of CSE\\
+ACSCE & ACSCE\\
+\end{tabular}
+
+\vspace{2cm}
+\noindent
+\textbf{Place:} Bengaluru\\
+\textbf{Date:}

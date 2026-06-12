@@ -1,0 +1,15 @@
+streamlit
+pandas
+numpy
+matplotlib
+shap
+lime
+joblib
+reportlab
+bcrypt
+mysql-connector-python
+sqlalchemy
+streamlit-shap
+plotly
+scikit-learn
+python-dotenv
